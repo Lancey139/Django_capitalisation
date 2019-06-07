@@ -1,8 +1,8 @@
 """
-PExemple de creation de vue par fonction
+Exemple de creation de vue par fonction
 """
 
-from django.http import HttpResponse
+from django.shortcuts import render
 
 def welcome(request):
-    return HttpResponse("Hello, world ! ")
+    return render(request, 'tictactoe/welcome.html')
