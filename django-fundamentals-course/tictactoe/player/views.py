@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from gameplay.models import Game
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+@login_required
 def home(request):
     # On récupère toutes les parties pour lesquelles l'utilisateur doit jouer
     

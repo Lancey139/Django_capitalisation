@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from django.conf.global_settings import STATICFILES_DIRS
+from django.conf.global_settings import STATICFILES_DIRS, LOGOUT_REDIRECT_URL
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -126,3 +126,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
         os.path.join(BASE_DIR,"static")
     ]
+
+# Adresse de renvoi après une authentifaction d'un utilisateur
+LOGIN_REDIRECT_URL= "player_home"
+# Adresse de renvoi après un logout
+LOGOUT_REDIRECT_URL= "tictactoe_welcome"
+# Adresse de l'interface de login
+LOGIN_URL="player_login"
