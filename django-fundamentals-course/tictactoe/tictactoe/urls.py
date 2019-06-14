@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import url
 
 from .views import welcome
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('player/', include('player.urls')),
+    url(r'^games/', include('gameplay.urls')),
     path('', welcome, name='tictactoe_welcome')
 ]

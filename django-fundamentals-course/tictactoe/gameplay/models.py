@@ -1,6 +1,7 @@
 from django.db import models
 from django.db.models import Q
 from django.contrib.auth.models import User
+from django.urls import reverse
 
 # Liste des options possibles pour une game
 GAME_STATUS_CHOICES = [
@@ -37,6 +38,10 @@ class Game(models.Model):
     
     # On déclare le manager associé
     objects = GamesQuerySet.as_manager()
+    
+    # Permet de construire l'url qui représente cette game
+    def get_absolute_url(self):
+        return reverse('gameplay_detail', args=[self.id])
     
     def __str__(self):
         return "{0} vs {1}".format(self.first_player, self.second_player)

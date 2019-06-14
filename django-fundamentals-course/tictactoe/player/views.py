@@ -75,7 +75,10 @@ def accept_invitation(request, id):
                 )
         
         invitation.delete()
-        return redirect('player_home')
+        # Redirection vers une mage ( url nommée player_home )
+        #return redirect('player_home')
+        # Appel de la méthode get_absolute_url du model game
+        return redirect(game)
     else:
         return render(request,
                       "player/accept_invitation_form.html",
