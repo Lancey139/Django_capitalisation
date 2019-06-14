@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gameplay',
-    'player'
+    'player',
+    'crispy_forms'
 ]
 
 MIDDLEWARE = [
@@ -133,3 +134,6 @@ LOGIN_REDIRECT_URL= "player_home"
 LOGOUT_REDIRECT_URL= "tictactoe_welcome"
 # Adresse de l'interface de login
 LOGIN_URL="player_login"
+
+# Framework du srispy form
+CRISPY_TEMPLATE_PACK='bootstrap3'
