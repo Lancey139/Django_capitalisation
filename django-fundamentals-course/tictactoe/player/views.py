@@ -1,6 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect, get_object_or_404
 from gameplay.models import Game
 from django.contrib.auth.decorators import login_required
+from .forms import InvitationForm
+from .models import Invitation
+from django.core.exceptions import PermissionDenied
+
 # Create your views here.
 
 @login_required
@@ -25,6 +29,58 @@ def home(request):
     my_games = Game.objects.games_for_user(request.user)
     active_games = my_games.active()
     
+    # On recupere les invitations qui sont recues par l'utilisateur
+    # Les invitations sont directement liées à l'utilisateur donc on 
+    # peut les récuperer grace a la foreignKey
+    invitations = request.user.invitations_received.all()
+    
     # Le chemin est relatif au dossier template de l'app
     return render(request, "player/home.html",
-                  {'games' : active_games})
+                  {'games' : active_games,
+                   'invitations' : invitations})
+    
+@login_required
+def new_invitation(request):
+    if request.method == "POST":
+        # L'utilisateur a rempli le form, il faut traiter les données
+        # Avant tout on remplie les valeurs de l'invitation qui ne sont pas présentes dans
+        # le form
+        invitation = Invitation(from_user=request.user)
+        
+        # On vérifie si la data est valide en lui donnant un model prérempli avec l'utilisa
+        # teur courant
+        form = InvitationForm(instance=invitation, data=request.POST)
+        # Cette méthode est tres importante et doit etre applée systématiquement
+        # Si c'est valide on repart sur le home, sinon le form non validé est renvoyé
+        # a l'utilisateur
+        if form.is_valid():
+            # On enregistre en data base
+            form.save()
+            return redirect("player_home")
+    else:
+        # L'utilisateur demande un nouveau FORM vierge, on lui affiche
+        form = InvitationForm()
+    return render(request, "player/new_invitation_form.html", {'form':form})
+
+@login_required
+def accept_invitation(request, id):
+    invitation = get_object_or_404(Invitation, pk=id)
+    if not request.user == invitation.to_user:
+        raise PermissionDenied
+    if request.method == 'POST':
+        if "accept" in request.POST:
+            game = Game.objects.create(
+                first_player=invitation.to_user,
+                second_player=invitation.from_user,
+                )
+        
+        invitation.delete()
+        return redirect('player_home')
+    else:
+        return render(request,
+                      "player/accept_invitation_form.html",
+                      {'invitation' : invitation})
+    
+        
+
+
