@@ -11,13 +11,12 @@ Home : {{ user.username }} !
 	<div class="row">
 		<div class="col-md-6">
 			<h3>Active games</h3>	
-			<ul class="list-group">
-				{% for l_game in games %}
-					<a class="list-group-item" href="{{ l_game.get_absolute_url }}">
-						{{ l_game.first_player }} vs {{ l_game.second_player }} 
-					</a>
-				{% endfor %}
-			</ul>
+			
+			{% include "player/game_list_snippet.html" with games_list=active_games %}
+			
+			<h3>Finished games</h3>	
+			
+			{% include "player/game_list_snippet.html" with games_list=finished_games %}
 			
 			<p>Click below to invite someone to play with you</p>
 			<p>

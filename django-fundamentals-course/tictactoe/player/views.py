@@ -28,7 +28,7 @@ def home(request):
     # le manager de game dans le models.py
     my_games = Game.objects.games_for_user(request.user)
     active_games = my_games.active()
-    
+    finished_games = my_games.difference(active_games)
     # On recupere les invitations qui sont recues par l'utilisateur
     # Les invitations sont directement liées à l'utilisateur donc on 
     # peut les récuperer grace a la foreignKey
@@ -36,7 +36,8 @@ def home(request):
     
     # Le chemin est relatif au dossier template de l'app
     return render(request, "player/home.html",
-                  {'games' : active_games,
+                  {'active_games' : active_games,
+                   'finished_games': finished_games,
                    'invitations' : invitations})
     
 @login_required
