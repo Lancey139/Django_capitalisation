@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from .forms import InvitationForm
 from .models import Invitation
 from django.core.exceptions import PermissionDenied
+from django.views.generic.edit import CreateView
+from django.contrib.auth.forms import UserCreationForm
+from django.urls.base import reverse_lazy
 
 # Create your views here.
 
@@ -85,6 +88,12 @@ def accept_invitation(request, id):
                       "player/accept_invitation_form.html",
                       {'invitation' : invitation})
     
-        
-
+class SignUpView(CreateView):        
+    """
+    Classe permettant de créer une vue de création d'un nouvel utilisateur
+    """
+    # On utilise le form préfait de Django
+    form_class = UserCreationForm
+    template_name = "player/signup_form.html"
+    success_url = reverse_lazy('player_home')
 

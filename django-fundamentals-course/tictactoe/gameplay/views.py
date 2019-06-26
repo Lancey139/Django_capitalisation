@@ -3,6 +3,7 @@ from .models import Game
 from django.contrib.auth.decorators import login_required
 from .forms import MoveForm
 from django.core.exceptions import PermissionDenied
+from django.views.generic.list import ListView
 # Create your views here.
 
 # Vue en charge d'afficher une partie
@@ -32,3 +33,11 @@ def make_move(request, id):
                       "gameplay/game_details.html",
                       {'game' :game, 'form': form}
                       )
+        
+"""
+La vue ci-dessous présente un exemple de view d'une classe
+Ecrire des vues sous forme de classe permet d'heriter de template
+deja fait  
+"""
+class AllGameList(ListView):
+    model = Game
